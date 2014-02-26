@@ -1,0 +1,13 @@
+body {
+	padding-top: 50px;
+}
+
+img {
+	height: 24px;
+	width: 24px;
+}
+
+#volume-container {
+	width: 200px; 
+	margin-bottom: 0px;
+}
