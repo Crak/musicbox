@@ -47,7 +47,7 @@ class SoundControl:
         mixer.attach()
         mixer.load()
         #print mixer.list()
-        self.element = alsamixer.Element(mixer, ELEMENT)
+        self.element = alsamixer.Element(mixer, self.ELEMENT)
         #print self.element.get_volume_range()
         
     def _get_index(self):
