@@ -41,7 +41,8 @@ ACTIONS = {
     "loop": ["pl_loop"]
 }
 
-DEFAULT_URI = "file:///mnt/music"
+#DEFAULT_URI = "file:///mnt/music"
+DEFAULT_URI = "file:///home/pi"
 
 def _request(file, data=None):
     """VLC does not accept POST requests"""
