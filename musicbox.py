@@ -38,6 +38,8 @@ Log file is /home/crak/.vnc/musicbox:1.log
 class SoundControl:
     """"""
     VOL = [0, 19, 30, 38, 44, 48, 52, 56, 59, 62, 64]
+    #ELEMENT = "Headphone"
+    ELEMENT = "PCM"
 
     def __init__(self):
         """"""
@@ -45,7 +47,7 @@ class SoundControl:
         mixer.attach()
         mixer.load()
         #print mixer.list()
-        self.element = alsamixer.Element(mixer, "Headphone")
+        self.element = alsamixer.Element(mixer, ELEMENT)
         #print self.element.get_volume_range()
         
     def _get_index(self):
@@ -85,12 +87,12 @@ class SoundControl:
             
 class ProcessManager:
     """"""
-    #USER = "crak"
-    USER = "musicbox"
+    USER = "pi"
+    #USER = "musicbox"
     
     UPTIME_CMD = ["uptime"]
     UNAME_CMD = ["uname", "-a"]
-    VLC_CMD = ["/usr/bin/vlc", "-I", "http"]
+    VLC_CMD = ["/usr/bin/vlc", "-I", "http", "--http-password", "0000"]
     VNC_CMD = ["/usr/bin/vncserver", "-geometry", "1024x600", "-depth", "16"]
     
     VLC_LOG = "/tmp/musicbox_vlc.log"

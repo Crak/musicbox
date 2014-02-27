@@ -20,6 +20,7 @@
 
 import urllib
 import urllib2
+import base64
 
 VLC_SERVER = "http://localhost:8080/requests/"
 
@@ -49,8 +50,10 @@ def _request(file, data=None):
     else:
         url = "%s%s" % (VLC_SERVER, file)
     #print url
-    handle = urllib2.urlopen(urllib2.Request(url))
-    return handle.read()
+    request = urllib2.Request(url)
+    request.add_header('Authorization', b'Basic %s' % base64.b64encode(b':0000'))
+    response = urllib2.urlopen(request)
+    return response.read()
 
 def request_playlist():
     """"""

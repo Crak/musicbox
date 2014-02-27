@@ -143,4 +143,4 @@ def system_manager():
 if __name__ == '__main__':
     sound = SoundControl()
     manager = ProcessManager()
-    run(host='192.168.2.2', port=80, debug=True)
+    run(host='192.168.1.20', port=80, debug=True)
