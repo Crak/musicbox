@@ -4,17 +4,10 @@ var initialized = false;
 var player_state = null;
 var player_time = 0;
 var player_length = 0;
-var player_counter = 0;
 
 function watchdog(){
-    if (player_counter < 2){
-        player_counter +=1;
-        if (playing()){update_player();};
-    }
-    else{
-        player_counter = 0;
-        vlc_request();
-    };    
+    if (playing()){update_player();};
+    vlc_request();
 }
 
 function playing(){
@@ -44,20 +37,32 @@ function select_media(event){
         vlc_request({data: {request: "browse", uri: $(this).attr("id")}});
     }
     else {
-        $("#browser-container > a").removeClass("active");
+        $("#media-container > a").removeClass("active");
         $(this).addClass("active");
     };
 }
 
 function add_media(event){
-    var media = $("#browser-container > a.active");
-    if (media.length){
-        event.data.request = "status";
-        event.data.option = media[0].id;
-        vlc_request(event);
-        $("#media_browser").modal("hide")
-        update_playlist(event);
+    if ($("#local-media").hasClass("active")){
+        var media = $("#media-container > a.active");
+        if (media.length){
+            event.data.request = "status";
+            event.data.option = media[0].id;
+            vlc_request(event);
+            $("#media_browser").modal("hide")
+            update_playlist(event);
+        }
     }
+    else if ($("#remote-media").hasClass("active")){
+        var media_url = $("#media-url").val();
+        if (media_url){
+            event.data.request = "status";
+            event.data.option = media_url;
+            vlc_request(event);
+            $("#media_browser").modal("hide")
+            update_playlist(event);
+        }
+    };
 }
 
 function update_player(data){
@@ -184,7 +189,7 @@ function load_playlist(data){
 
 function load_browser(data){    
     $("#browser-title").text(data.element[0].path.replace("..", ""));
-    var div = $("#browser-container");
+    var div = $("#media-container");
     div.empty();
     $.each(data.element, function(index, item){
         var a = $("<a>", {"class": "list-group-item", "id": item.uri, "data-type": item.type});

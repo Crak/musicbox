@@ -59,10 +59,29 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <label class="text-info modal-title" id="browser-title"></label>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
+		<ul class="nav nav-pills">
+		    <li class="active">
+			<a href="#local-media" data-toggle="pill">
+			    <span class="glyphicon glyphicon-hdd"> Local</span>
+			</a>
+		    </li>
+		    <li>
+			<a href="#remote-media" data-toggle="pill">
+			    <span class="glyphicon glyphicon-cloud"> Remote</span>
+			</a>
+		    </li>
+		</ul>
             </div>
-            <div class="modal-body list-group" id="browser-container"></div>
+            <div class="modal-body tab-content">
+		<div class="tab-pane active" id="local-media">
+		    <div class="well well-sm"><label class="text-info modal-title" id="browser-title"></label></div>
+		    <div class="list-group" id="media-container"></div>
+		</div>
+		<div class="tab-pane" id="remote-media">
+		    <input class="form-control" type="url" id="media-url" placeholder="Url">
+		</div>
+	    </div>
             <div class="modal-footer">
                 <a class="btn btn-primary" id="play-button">Play</a>
                 <a class="btn btn-primary" id="enqueue-button">Enqueue</a>

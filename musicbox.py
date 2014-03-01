@@ -92,7 +92,7 @@ class ProcessManager:
     
     UPTIME_CMD = ["uptime"]
     UNAME_CMD = ["uname", "-a"]
-    VLC_CMD = ["/usr/bin/vlc", "-I", "http", "--http-password", "0000"]
+    VLC_CMD = ["/usr/bin/vlc", "--fullscreen", "-I", "http", "--http-password", "0000"]
     VNC_CMD = ["/usr/bin/vncserver", "-geometry", "1024x600", "-depth", "16"]
     
     VLC_LOG = "/tmp/musicbox_vlc.log"
