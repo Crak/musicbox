@@ -29,14 +29,6 @@ import config
 from threading import Thread
 from pyalsa import alsamixer
 
-DUMMY_LOG = """
-New 'musicbox:1 (crak)' desktop is musicbox:1
-
-Starting applications specified in /home/crak/.vnc/xstartup
-Log file is /home/crak/.vnc/musicbox:1.log
-
-"""
-
 class SoundControl:
     """"""
     VOL = [0, 19, 30, 38, 44, 48, 52, 56, 59, 62, 64]
@@ -93,10 +85,8 @@ class ProcessManager:
     UPTIME_CMD = ["uptime"]
     UNAME_CMD = ["uname", "-a"]
     VLC_CMD = ["/usr/bin/vlc", "--fullscreen", "-I", "http", "--http-password", "0000"]
-    VNC_CMD = ["/usr/bin/vncserver", "-geometry", "1024x600", "-depth", "16"]
     
     VLC_LOG = "/tmp/musicbox_vlc.log"
-    VNC_LOG = "/tmp/musicbox_vnc.log"
     
     def __init__(self):
         """"""
@@ -116,15 +106,8 @@ class ProcessManager:
         log.setFormatter(format)
         self.vlc_logger.addHandler(log)
         
-        self.vnc_logger = logging.getLogger("VNC")
-        self.vnc_logger.setLevel(logging.INFO)
-        log = logging.FileHandler(self.VNC_LOG, "w")
-        log.setFormatter(format)
-        self.vnc_logger.addHandler(log)
         
-        self.vnc = None
         self.vlc = self._spawn(self.VLC_CMD)
-        #self.vnc = self._spawn(self.VNC_CMD)
         
         self.th = Thread(target=self._log_buffer)
         self.th.daemon = True
@@ -179,31 +162,17 @@ class ProcessManager:
             self.vlc_logger.warning("Restarted")
             self.vlc = self._spawn(self.VLC_CMD)
         
-    def restart_vnc(self):
-        """"""
-        try:
-            self.vnc.terminate()
-        except Exception as e:
-            self.vnc_logger.error(e)
-        else:
-            self.vnc_logger.warning("Restarted")
-            self.vnc = self._spawn(self.VNC_CMD)
-
     def get_vlc_log(self):
         """"""
         f = open(self.VLC_LOG, "r")
         tmp = f.readlines()
         f.close()
-        tmp = reversed(tmp)
         return "".join(tmp)
         
-    def get_vnc_log(self):
-        """"""
-        return DUMMY_LOG
         
     def quit(self):
         """"""
-        for p in [self.vlc, self.vnc]:
+        for p in [self.vlc]:
             try:
                 p.terminate()
             except Exception as e:

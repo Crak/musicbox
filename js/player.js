@@ -210,7 +210,7 @@ function load_browser(data){
 function vlc_request(event){
     event = (typeof event === "undefined") ? {data: {request: "status"}} : event;
     
-    var jqxhr = $.ajax({url: "localplayer", method: "POST", data: event.data});
+    var jqxhr = $.ajax({url: "player", method: "POST", data: event.data});
     
     jqxhr.always(function(data, textStatus, jqXHR){
         if (!initialized){

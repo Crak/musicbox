@@ -30,18 +30,17 @@ from musicbox import SoundControl, ProcessManager
 BRAND = 'Musicbox'
 
 DEFAULT = {'url': '/'}
-SYSTEM = {'url': '/system', 'name': 'System Logs', 'tpl': 'system', 'js': 'system.js'}
-LOCAL_PLAYER = {'url': '/localplayer', 'name': 'Local Player', 'tpl': 'local_player', 'js': 'local_player.js'}
-WEB_PLAYER = {'url': '/webplayer', 'name': 'Web Player', 'tpl': 'web_player',  'js': 'web_player.js'}
+SYSTEM = {'url': '/system', 'name': 'System', 'tpl': 'system', 'js': 'system.js'}
+PLAYER = {'url': '/player', 'name': 'Player', 'tpl': 'player', 'js': 'player.js'}
 
 def template_values(page):
-    values = {'brand': BRAND, 'brand_url': SYSTEM['url']}
+    values = {'brand': BRAND, 'brand_url': DEFAULT['url']}
     values['title'] = "%s - %s" % (BRAND, page['name'])
     values['script'] =  page['js']
     values['mute'] =  sound.get_mute()
     values['volume'] =  sound.get_volume()
     navs = []
-    for p in [LOCAL_PLAYER, WEB_PLAYER]:
+    for p in [PLAYER, SYSTEM]:
         if page == p:
             navs.append({'url': p['url'], 'name': p['name'], 'active': True})
         else:
@@ -50,7 +49,7 @@ def template_values(page):
     if page == SYSTEM:
         values['uname'] = manager.get_uname()
         values['uptime'] = manager.get_uptime()
-        values['logs'] = [manager.get_vlc_log(), manager.get_vnc_log()]
+        values['log'] = manager.get_vlc_log()
     return values
     
 @route('/js/<filepath:path>')
@@ -70,15 +69,10 @@ def serve_media(filepath):
     return static_file(filepath, root='./media/')
 
 @route(DEFAULT['url'])
-@route(LOCAL_PLAYER['url'])
-@view(LOCAL_PLAYER['tpl'])
+@route(PLAYER['url'])
+@view(PLAYER['tpl'])
 def local_player():
-    return template_values(LOCAL_PLAYER)
-    
-@route(WEB_PLAYER['url'])
-@view(WEB_PLAYER['tpl'])
-def web_player():
-    return template_values(WEB_PLAYER)
+    return template_values(PLAYER)
     
 @route(SYSTEM['url'])
 @view(SYSTEM['tpl'])
@@ -103,7 +97,7 @@ def sound_manager():
     elif req == 'standby':
         return json.dumps({})
 
-@route(LOCAL_PLAYER['url'], method='POST')
+@route(PLAYER['url'], method='POST')
 def local_proxy():
     response.headers['Content-type'] = 'application/json'
     req = request.forms.get('request')
@@ -133,14 +127,6 @@ def system_manager():
         elif act == 'reload':
             pass
         return json.dumps({'vlc_log': manager.get_vlc_log()})
-    elif req == 'vnc':
-        act = request.forms.get('action')
-        #print "ACTION: %s" % act
-        if act == 'restart':
-            manager.restart_vnc()
-        elif act == 'reload':
-            pass
-        return json.dumps({'vnc_log': manager.get_vnc_log()})
 
 if __name__ == '__main__':
     sound = SoundControl()
