@@ -22,6 +22,8 @@ import urllib
 import urllib2
 import base64
 
+import config
+
 VLC_SERVER = "http://localhost:8080/requests/"
 
 PLAYLIST_JSON = "playlist.json"
@@ -41,8 +43,7 @@ ACTIONS = {
     "loop": ["pl_loop"]
 }
 
-#DEFAULT_URI = "file:///mnt/music"
-DEFAULT_URI = "file:///home/pi"
+DEFAULT_URI = config.get_uri()
 
 def _request(file, data=None):
     """VLC does not accept POST requests"""

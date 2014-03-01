@@ -21,6 +21,8 @@
 
 import json
 
+import config
+
 from bottle import route, view, request, response, static_file, run
 from vlc_proxy import request_browse, request_status, request_playlist
 from musicbox import SoundControl, ProcessManager
@@ -143,4 +145,4 @@ def system_manager():
 if __name__ == '__main__':
     sound = SoundControl()
     manager = ProcessManager()
-    run(host='192.168.1.20', port=80, debug=True)
+    run(host=config.get_host(), port=80, debug=True)

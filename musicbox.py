@@ -24,6 +24,8 @@ import atexit
 import logging
 import subprocess
 
+import config
+
 from threading import Thread
 from pyalsa import alsamixer
 
@@ -38,8 +40,7 @@ Log file is /home/crak/.vnc/musicbox:1.log
 class SoundControl:
     """"""
     VOL = [0, 19, 30, 38, 44, 48, 52, 56, 59, 62, 64]
-    #ELEMENT = "Headphone"
-    ELEMENT = "PCM"
+    ELEMENT = config.get_element()
 
     def __init__(self):
         """"""
@@ -87,8 +88,7 @@ class SoundControl:
             
 class ProcessManager:
     """"""
-    USER = "pi"
-    #USER = "musicbox"
+    USER = config.get_user()
     
     UPTIME_CMD = ["uptime"]
     UNAME_CMD = ["uname", "-a"]
