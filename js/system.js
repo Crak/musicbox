@@ -4,18 +4,11 @@ function update_log(data){
         pre.empty();
         pre.text(data.vlc_log);
     }
-    else if (data.vnc_log){
-        var pre = $("#vnc-log");
-        pre.empty();
-        pre.text(data.vnc_log);
-    };
 }
 
 function load_system(){
-    $("#reload-vlc-button").on("click", {request: "vlc", action: "reload"}, system_request);
     $("#restart-vlc-button").on("click", {request: "vlc", action: "restart"}, system_request);
-    $("#reload-vnc-button").on("click", {request: "vnc", action: "reload"}, system_request);
-    $("#restart-vnc-button").on("click", {request: "vnc", action: "restart"}, system_request);
+    $("#quit-button").on("click", {request: "system", action: "quit"}, system_request);
 }
 
 function system_request(event){

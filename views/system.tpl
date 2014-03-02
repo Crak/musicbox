@@ -7,12 +7,12 @@
         <span class="glyphicon glyphicon-cog"></span>
     </button>
     <ul class="dropdown-menu" role="menu">
-    <li><a id="reload-vlc-button">Reload Log
+    <li><a id="restart-vlc-button">Restart VLC
         <span class="glyphicon glyphicon-refresh pull-right"></span>
     </a></li>
     <li class="divider"></li>
-    <li><a id="restart-vlc-button">Restart VLC
-    <span class="glyphicon glyphicon-retweet pull-right"></span>
+    <li><a id="quit-button">Quit Server
+    <span class="glyphicon glyphicon-off pull-right"></span>
     </a></li>
     </ul>
 </div>

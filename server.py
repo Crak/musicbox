@@ -19,6 +19,7 @@
 ## Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 ###############################################################################
 
+import sys
 import json
 
 import config
@@ -124,11 +125,14 @@ def system_manager():
         #print "ACTION: %s" % act
         if act == 'restart':
             manager.restart_vlc()
-        elif act == 'reload':
-            pass
-        return json.dumps({'vlc_log': manager.get_vlc_log()})
+            return json.dumps({'vlc_log': manager.get_vlc_log()})
+    if req == 'system':
+        act = request.forms.get('action')
+        #print "ACTION: %s" % act
+        if act == 'quit':
+            sys.stderr.close()
 
 if __name__ == '__main__':
     sound = SoundControl()
     manager = ProcessManager()
-    run(host=config.get_host(), port=80, debug=True)
+    run(host=config.get_host(), port=80)
