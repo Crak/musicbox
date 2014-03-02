@@ -84,7 +84,8 @@ class ProcessManager:
     
     UPTIME_CMD = ["uptime"]
     UNAME_CMD = ["uname", "-a"]
-    VLC_CMD = ["/usr/bin/vlc", "--fullscreen", "-I", "http", "--http-password", "0000"]
+    VLC_CMD = ["/usr/bin/vlc", "-I", "http", 
+    "--http-password", config.get_vlc_password(), "--fullscreen"]
     
     VLC_LOG = "/tmp/musicbox_vlc.log"
     

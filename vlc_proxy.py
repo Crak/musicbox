@@ -44,6 +44,7 @@ ACTIONS = {
 }
 
 DEFAULT_URI = config.get_uri()
+VLC_AUTH = b'Basic %s' % base64.b64encode(b':%s' % config.get_vlc_password())
 
 def _request(file, data=None):
     """VLC does not accept POST requests"""
@@ -53,7 +54,7 @@ def _request(file, data=None):
         url = "%s%s" % (VLC_SERVER, file)
     #print url
     request = urllib2.Request(url)
-    request.add_header('Authorization', b'Basic %s' % base64.b64encode(b':0000'))
+    request.add_header('Authorization', VLC_AUTH)
     response = urllib2.urlopen(request)
     return response.read()
 

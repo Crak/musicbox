@@ -22,16 +22,18 @@ import ConfigParser
 
 DEFAULT_SECTION = "DEFAULT"
 
-HOST_OPTION = "host"
-ELEMENT_OPTION = "element"
-USER_OPTION = "user"
-URI_OPTION = "uri"
+HOST_OPTION = "bottle_host"
+ELEMENT_OPTION = "alsa_element"
+USER_OPTION = "system_user"
+VLC_PASSWORD_OPTION = "vlc_password"
+URI_OPTION = "default_uri"
 
 DEFAULTS = {
-    HOST_OPTION: "192.168.2.2",
+    HOST_OPTION: "127.0.0.1",
     ELEMENT_OPTION: "Headphone",
     USER_OPTION: "musicbox",
-    URI_OPTION: "file:///mnt/music"
+    VLC_PASSWORD_OPTION: "0000",
+    URI_OPTION: "file:///home/musicbox"
 }
 
 CONFIG_FILE = "default.cfg"
@@ -47,6 +49,10 @@ def get_element():
 def get_user():
     """"""
     return config.get(DEFAULT_SECTION, USER_OPTION)
+
+def get_vlc_password():
+    """"""
+    return config.get(DEFAULT_SECTION, VLC_PASSWORD_OPTION)
     
 def get_uri():
     """"""
