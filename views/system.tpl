@@ -16,6 +16,6 @@
     </a></li>
     </ul>
 </div>
-<pre class="clearfix" id="vlc-log">{{log}}</pre>
+<pre id="vlc-log">{{log}}</pre>
 
 %rebase musicbox **locals()
