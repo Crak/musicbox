@@ -1,7 +1,5 @@
 var LOCAL_PLAYER = "VLC";
 
-var BASE_URL = "http://";
-
 var initialized = false;
 var player_state = null;
 var player_time = 0;
@@ -63,8 +61,8 @@ function add_media(event){
     else if ($("#remote-media").hasClass("active")){
         var media_url = $("#media-url").val();
         if (media_url){
-            re = new RegExp(BASE_URL);
-            if (!re.test(media_url)){media_url = BASE_URL + media_url;};
+            re = new RegExp("^(http|https)://");
+            if (!re.test(media_url)){media_url = "http://" + media_url;};
             event.data.option = media_url;
             vlc_request(event);
             $("#media_browser").modal("hide")
