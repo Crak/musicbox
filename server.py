@@ -123,9 +123,12 @@ def system_manager():
     if req == 'vlc':
         act = request.forms.get('action')
         #print "ACTION: %s" % act
-        if act == 'restart':
+        full_log = False
+        if act == 'log':
+            full_log = True
+        elif act == 'restart':
             manager.restart_vlc()
-            return json.dumps({'vlc_log': manager.get_vlc_log()})
+        return json.dumps({'vlc_log': manager.get_vlc_log(full_log)})
     if req == 'system':
         act = request.forms.get('action')
         #print "ACTION: %s" % act

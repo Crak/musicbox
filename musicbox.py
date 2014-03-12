@@ -163,12 +163,15 @@ class ProcessManager:
             self.vlc_logger.warning("Restarted")
             self.vlc = self._spawn(self.VLC_CMD)
         
-    def get_vlc_log(self):
+    def get_vlc_log(self, full=False):
         """"""
         f = open(self.VLC_LOG, "r")
         tmp = f.readlines()
         f.close()
-        return "".join(tmp)
+        if full:
+            return "".join(tmp)
+        else:
+            return "".join(tmp[-25:])
         
         
     def quit(self):
