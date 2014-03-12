@@ -73,7 +73,9 @@ def add_url(url):
             urls.pop(0)
         urls.append(url)
         config.set(DEFAULT_SECTION, URLS_OPTION, json.dumps(urls))
-        config.write(open(CONFIG_FILE, "w"))
+        fd = open(CONFIG_FILE, "w")
+        config.write(fd)
+        fd.close()
 
 config = ConfigParser.SafeConfigParser(DEFAULTS)
 config.read(CONFIG_FILE)
