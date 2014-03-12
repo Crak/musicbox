@@ -28,7 +28,7 @@ ELEMENT_OPTION = "alsa_element"
 USER_OPTION = "system_user"
 VLC_PASSWORD_OPTION = "vlc_password"
 URI_OPTION = "default_uri"
-URLS_OPTION = "urls"
+URL_HISTORY_OPTION = "url_history"
 
 DEFAULTS = {
     HOST_OPTION: "127.0.0.1",
@@ -61,21 +61,23 @@ def get_uri():
     """"""
     return config.get(DEFAULT_SECTION, URI_OPTION)
     
-def get_urls():
+def get_url_history():
     """"""
-    return json.loads(config.get(DEFAULT_SECTION, URLS_OPTION))
+    return json.loads(config.get(DEFAULT_SECTION, URL_HISTORY_OPTION))
 
-def add_url(url):
+def add_url_history(url):
     """"""
-    urls = get_urls()
-    if url not in urls:
-        if len(urls) > 9:
-            urls.pop()
-        urls.insert(0, url)
-        config.set(DEFAULT_SECTION, URLS_OPTION, json.dumps(urls))
-        fd = open(CONFIG_FILE, "w")
-        config.write(fd)
-        fd.close()
+    url_list = get_url_history()
+    if url in url_list:
+        url_list.pop(url_list.index(url))
+    else:
+        if len(url_list) > 9:
+            url_list.pop()
+    url_list.insert(0, url)
+    config.set(DEFAULT_SECTION, URLS_OPTION, json.dumps(url_list))
+    fd = open(CONFIG_FILE, "w")
+    config.write(fd)
+    fd.close()
 
 config = ConfigParser.SafeConfigParser(DEFAULTS)
 config.read(CONFIG_FILE)

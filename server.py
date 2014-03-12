@@ -111,14 +111,14 @@ def local_proxy():
         data = json.loads(request_browse(uri))
         act = request.forms.get('action')
         if act == 'load':
-            data['urls'] = config.get_urls()
+            data['urls'] = config.get_url_history()
         return json.dumps(data)
     elif req == 'status':
         act = request.forms.get('action')
         opt = request.forms.get('option')
         #print "ACTION: %s - %s" % (act, opt)
         if 'http://' in str(opt):
-            config.add_url(opt)
+            config.add_url_history(opt)
         return request_status(act, opt)
 
 @route(SYSTEM['url'], method='POST')
