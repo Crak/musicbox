@@ -22,7 +22,7 @@
 				<span class="glyphicon glyphicon-trash"></span>
 			</button>
 		</div>
-        <hr>
+	<div><hr></div>
         <div class="well">
             <div class="progress progress-striped btn-block">
                 <div class="progress-bar progress-bar-primary" style="width: 0%" id="seek-progress"></div>
@@ -31,8 +31,14 @@
                 <a class="btn btn-primary" id="prev-button">
                 <span class="glyphicon glyphicon-fast-backward"></span>
                 </a>
+                <a class="btn btn-primary" id="seek-backward-button">
+                <span class="glyphicon glyphicon-backward"></span>
+                </a>
                 <a class="btn btn-primary" id="stop-button">
                  <span class="glyphicon glyphicon-stop"></span>
+                </a>
+                <a class="btn btn-primary" id="seek-forward-button">
+                 <span class="glyphicon glyphicon-forward"></span>
                 </a>
                 <a class="btn btn-primary" id="next-button">
                  <span class="glyphicon glyphicon-fast-forward"></span>
@@ -40,7 +46,7 @@
             </div>
         </div>
         <ul class="nav nav-pills nav-justified">
-            <li class="btn btn-primary btn-lg" data-toggle="collapse" href="#playlist" id="playlist-button">
+            <li class="btn btn-primary btn-lg clearfix" data-toggle="collapse" href="#playlist" id="playlist-button">
                 <span class="glyphicon glyphicon-th-list pull-left"></span>
                 <span class="badge-inverse pull-right" id="playlist-items"></span>
             </li>
