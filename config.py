@@ -36,7 +36,7 @@ DEFAULTS = {
     USER_OPTION: "musicbox",
     VLC_PASSWORD_OPTION: "0000",
     URI_OPTION: "file:///home/musicbox",
-    URLS_OPTION: "[]"
+    URL_HISTORY_OPTION: "[]"
 }
 
 CONFIG_FILE = "default.cfg"
