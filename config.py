@@ -74,7 +74,7 @@ def add_url_history(url):
         if len(url_list) > 9:
             url_list.pop()
     url_list.insert(0, url)
-    config.set(DEFAULT_SECTION, URLS_OPTION, json.dumps(url_list))
+    config.set(DEFAULT_SECTION, URL_HISTORY_OPTION, json.dumps(url_list))
     fd = open(CONFIG_FILE, "w")
     config.write(fd)
     fd.close()
