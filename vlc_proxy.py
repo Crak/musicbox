@@ -36,6 +36,7 @@ ACTIONS = {
     "play": ["pl_play", "id"],
     "toggle_pause": ["pl_pause"],
     "stop": ["pl_stop"],
+    "seek": ["seek", "val"],
     "next": ["pl_next"],
     "previous": ["pl_previous"],
     "empty": ["pl_empty"],

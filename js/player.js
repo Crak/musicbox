@@ -152,8 +152,10 @@ function load_player(data){
     
     $("#seek-progress").attr("style", format_progress(data.position));
 
+    $("#seek-backward-button").on("click", {request: "status", action: "seek", option: "-1%"}, vlc_request);
     $("#prev-button").on("click", {request: "status", action: "previous"}, vlc_request);
     $("#stop-button").on("click", {request: "status", action: "stop"}, vlc_request);
+    $("#seek-forward-button").on("click", {request: "status", action: "seek", option: "+1%"}, vlc_request);
     $("#next-button").on("click", {request: "status", action: "next"}, vlc_request);
     
     
