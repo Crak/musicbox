@@ -70,8 +70,8 @@ def add_url(url):
     urls = get_urls()
     if url not in urls:
         if len(urls) > 9:
-            urls.pop(0)
-        urls.append(url)
+            urls.pop()
+        urls.insert(0, url)
         config.set(DEFAULT_SECTION, URLS_OPTION, json.dumps(urls))
         fd = open(CONFIG_FILE, "w")
         config.write(fd)
