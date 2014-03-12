@@ -35,7 +35,7 @@ DEFAULTS = {
     ELEMENT_OPTION: "PCM",
     USER_OPTION: "musicbox",
     VLC_PASSWORD_OPTION: "0000",
-    URI_OPTION: "file:///home/musicbox"
+    URI_OPTION: "file:///home/musicbox",
     URLS_OPTION: "[]"
 }
 
