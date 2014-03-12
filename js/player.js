@@ -42,11 +42,16 @@ function select_media(event){
     };
 }
 
+function select_url(event){
+    $("#url-container > a").removeClass("active");
+    $(this).addClass("active");
+    $("#media-url").val($(this).text());
+}
+
 function add_media(event){
     if ($("#local-media").hasClass("active")){
         var media = $("#media-container > a.active");
         if (media.length){
-            event.data.request = "status";
             event.data.option = media[0].id;
             vlc_request(event);
             $("#media_browser").modal("hide")
@@ -56,7 +61,6 @@ function add_media(event){
     else if ($("#remote-media").hasClass("active")){
         var media_url = $("#media-url").val();
         if (media_url){
-            event.data.request = "status";
             event.data.option = media_url;
             vlc_request(event);
             $("#media_browser").modal("hide")
@@ -134,9 +138,9 @@ function click_playlist(event){
 }
 
 function load_player(data){    
-    $("#open-button").on("click", {request: "browse"}, vlc_request);
-    $("#play-button").on("click", {action: "add_play"}, add_media);
-    $("#enqueue-button").on("click", {action: "add_enqueue"}, add_media);
+    $("#open-button").on("click", {request: "browse", action: "load"}, vlc_request);
+    $("#play-button").on("click", {request: "status", action: "add_play"}, add_media);
+    $("#enqueue-button").on("click", {request: "status", action: "add_enqueue"}, add_media);
 
     $("#toggle-button").on("click", {request: "status", action: "toggle_pause"}, vlc_request);
     
@@ -189,7 +193,7 @@ function load_playlist(data){
     $("#playlist-items").text(items.length);
 }
 
-function load_browser(data){    
+function load_browser(data){
     $("#browser-title").text(data.element[0].path.replace("..", ""));
     var div = $("#media-container");
     div.empty();
@@ -207,6 +211,16 @@ function load_browser(data){
         a.on("click", select_media);
         div.append(a);
     });
+    if (data.urls){
+        var div = $("#url-container");
+        div.empty();
+        $.each(data.urls, function(index, item){
+            var a = $("<a>", {"class": "list-group-item"});
+            a.append(item);
+            a.on("click", select_url);
+            div.append(a);
+        });
+    }
 }
 
 function vlc_request(event){

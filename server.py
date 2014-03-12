@@ -108,11 +108,17 @@ def local_proxy():
     elif req == 'browse':
         uri = request.forms.get('uri')
         #print "URI: %s" % uri
-        return request_browse(uri)
+        data = json.loads(request_browse(uri))
+        act = request.forms.get('action')
+        if act == 'load':
+            data['urls'] = config.get_urls()
+        return json.dumps(data)
     elif req == 'status':
         act = request.forms.get('action')
         opt = request.forms.get('option')
         #print "ACTION: %s - %s" % (act, opt)
+        if 'http://' in str(opt):
+            config.add_url(opt)
         return request_status(act, opt)
 
 @route(SYSTEM['url'], method='POST')

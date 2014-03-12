@@ -81,11 +81,16 @@
             </div>
             <div class="modal-body tab-content">
 		<div class="tab-pane active" id="local-media">
-		    <div class="well well-sm"><label class="text-info modal-title" id="browser-title"></label></div>
+		    <div class="well well-sm">
+			<label class="text-info modal-title" id="browser-title"></label>
+		    </div>
 		    <div class="list-group" id="media-container"></div>
 		</div>
 		<div class="tab-pane" id="remote-media">
-		    <input class="form-control" type="url" id="media-url" placeholder="Url">
+			<div class="well well-sm">
+				<input class="form-control" type="url" id="media-url" placeholder="Url">
+			</div>
+			<div class="list-group" id="url-container"></div>
 		</div>
 	    </div>
             <div class="modal-footer">

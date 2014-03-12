@@ -18,6 +18,7 @@
 ## Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 ###############################################################################
 
+import json
 import ConfigParser
 
 DEFAULT_SECTION = "DEFAULT"
@@ -27,13 +28,15 @@ ELEMENT_OPTION = "alsa_element"
 USER_OPTION = "system_user"
 VLC_PASSWORD_OPTION = "vlc_password"
 URI_OPTION = "default_uri"
+URLS_OPTION = "urls"
 
 DEFAULTS = {
     HOST_OPTION: "127.0.0.1",
-    ELEMENT_OPTION: "Headphone",
+    ELEMENT_OPTION: "PCM",
     USER_OPTION: "musicbox",
     VLC_PASSWORD_OPTION: "0000",
     URI_OPTION: "file:///home/musicbox"
+    URLS_OPTION: "[]"
 }
 
 CONFIG_FILE = "default.cfg"
@@ -57,10 +60,23 @@ def get_vlc_password():
 def get_uri():
     """"""
     return config.get(DEFAULT_SECTION, URI_OPTION)
+    
+def get_urls():
+    """"""
+    return json.loads(config.get(DEFAULT_SECTION, URLS_OPTION))
+
+def add_url(url):
+    """"""
+    urls = get_urls()
+    if url not in urls:
+        if len(urls) > 9:
+            urls.pop(0)
+        urls.append(url)
+        config.set(DEFAULT_SECTION, URLS_OPTION, json.dumps(urls))
+        config.write(open(CONFIG_FILE, "w"))
 
 config = ConfigParser.SafeConfigParser(DEFAULTS)
 config.read(CONFIG_FILE)
 
 if __name__ == "__main__":
-    config.write(open(CONFIG_FILE, "w"))
-    print config.defaults()
+    print get_urls()
