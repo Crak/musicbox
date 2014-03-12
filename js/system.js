@@ -7,6 +7,7 @@ function update_log(data){
 }
 
 function load_system(){
+    $("#log-vlc-button").on("click", {request: "vlc", action: "log"}, system_request);
     $("#restart-vlc-button").on("click", {request: "vlc", action: "restart"}, system_request);
     $("#quit-button").on("click", {request: "system", action: "quit"}, system_request);
 }

@@ -7,15 +7,17 @@
         <span class="glyphicon glyphicon-cog"></span>
     </button>
     <ul class="dropdown-menu" role="menu">
+    <li><a id="log-vlc-button">Full Log
+        <span class="glyphicon glyphicon-plus pull-right"></span>
+    </a></li>
     <li><a id="restart-vlc-button">Restart VLC
         <span class="glyphicon glyphicon-refresh pull-right"></span>
     </a></li>
     <li class="divider"></li>
     <li><a id="quit-button">Quit Server
-    <span class="glyphicon glyphicon-off pull-right"></span>
+    <span class="glyphicon glyphicon-flash pull-right"></span>
     </a></li>
     </ul>
 </div>
 <pre id="vlc-log">{{log}}</pre>
-
 %rebase musicbox **locals()
