@@ -44,7 +44,7 @@
                         </button>
                         <button type="button" class="btn btn-default navbar-btn disabled">
                             <div class="progress" id="volume-container">
-                                <div class="progress-bar progress-bar-primary" style="width: {{volume}}%"  id="volume-progress"></div>
+                                <div class="progress-bar progress-bar-primary" style="width: {{volume}}%"id="volume-progress"></div>
                             </div>
                         </button>
                         <button type="button" class="btn btn-default navbar-btn"  id="volume-up-button">
@@ -52,7 +52,7 @@
                         </button>
                     </div>
                     <button type="button" class="btn btn-default navbar-btn" data-toggle="button" id="standby-button">
-                        <span class="glyphicon glyphicon-off"></span>
+                        <span class="glyphicon glyphicon-flash"></span>
                     </button>
                 </div>
             </div>

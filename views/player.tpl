@@ -8,7 +8,7 @@
             <span class="glyphicon glyphicon-play"></span>
 		</button>
 		<label class="song-timer" id="elapsed-time"></label>
-		<div class="pull-right clearfix">
+		<div class="pull-right">
 			<label class="song-timer" id="total-time"></label>
 			<div class="btn-group">
 				<button type="button" class="btn btn-primary" data-toggle="button" id="random-button">
@@ -46,7 +46,7 @@
             </div>
         </div>
         <ul class="nav nav-pills nav-justified">
-            <li class="btn btn-primary btn-lg clearfix" data-toggle="collapse" href="#playlist" id="playlist-button">
+            <li class="btn btn-primary btn-lg" data-toggle="collapse" href="#playlist" id="playlist-button">
                 <span class="glyphicon glyphicon-th-list pull-left"></span>
                 <span class="badge-inverse pull-right" id="playlist-items"></span>
             </li>
@@ -68,25 +68,25 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
 		<ul class="nav nav-pills">
 		    <li class="active">
-			<a href="#local-media" data-toggle="pill">
+			<a href="#local-media" data-toggle="pill" id="local-button">
 			    <span class="glyphicon glyphicon-hdd"> Local</span>
 			</a>
 		    </li>
 		    <li>
-			<a href="#remote-media" data-toggle="pill">
+			<a href="#remote-media" data-toggle="pill" id="remote-button">
 			    <span class="glyphicon glyphicon-cloud"> Remote</span>
 			</a>
 		    </li>
 		</ul>
             </div>
             <div class="modal-body tab-content">
-		<div class="tab-pane active" id="local-media">
+		<div class="tab-pane fade in active" id="local-media">
 		    <div class="well well-sm">
 			<label class="text-info modal-title" id="browser-title"></label>
 		    </div>
 		    <div class="list-group" id="media-container"></div>
 		</div>
-		<div class="tab-pane" id="remote-media">
+		<div class="tab-pane fade" id="remote-media">
 			<div class="well well-sm">
 				<input class="form-control" type="url" id="media-url" placeholder="Url">
 			</div>

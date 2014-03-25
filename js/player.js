@@ -165,6 +165,8 @@ function load_player(data){
     $("#next-button").on("click", {request: "status", action: "next"}, vlc_request);
     
     
+    $("#remote-button").on("shown.bs.tab", function(event){$("#media-url").focus();});
+    
     $("#playlist").on("show.bs.collapse", toggle_playlist);
     $("#playlist").on("hide.bs.collapse", toggle_playlist);
     

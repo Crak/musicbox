@@ -11,7 +11,7 @@
     </a></li>
     <li class="divider"></li>
     <li><a id="quit-button">Quit Server
-    <span class="glyphicon glyphicon-flash pull-right"></span>
+    <span class="glyphicon glyphicon-off pull-right"></span>
     </a></li>
     </ul>
 </div>
