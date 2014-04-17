@@ -117,8 +117,6 @@ def local_proxy():
         act = request.forms.get('action')
         opt = request.forms.get('option')
         #print "ACTION: %s - %s" % (act, opt)
-        if 'http://' in str(opt):
-            config.add_url_history(opt)
         return request_status(act, opt)
 
 @route(SYSTEM['url'], method='POST')

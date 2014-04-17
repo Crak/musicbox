@@ -18,9 +18,10 @@
 ## Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 ###############################################################################
 
+import base64
 import urllib
 import urllib2
-import base64
+import urlparse
 
 import config
 
@@ -44,8 +45,20 @@ ACTIONS = {
     "loop": ["pl_loop"]
 }
 
+URLS = [
+    ("youtube.com", "list", "https://gdata.youtube.com/feeds/api/playlists/")
+]
+
 DEFAULT_URI = config.get_uri()
 VLC_AUTH = b'Basic %s' % base64.b64encode(b':%s' % config.get_vlc_password())
+
+def _encode(action, option):
+    """"""
+    command = ACTIONS[action]
+    tmp = {"command": command[0]}
+    if option and len(command) > 1:
+        tmp[command[1]] = option
+    return urllib.urlencode(tmp)
 
 def _request(file, data=None):
     """VLC does not accept POST requests"""
@@ -58,6 +71,28 @@ def _request(file, data=None):
     request.add_header('Authorization', VLC_AUTH)
     response = urllib2.urlopen(request)
     return response.read()
+
+def _process_url(action, url):
+    """"""
+    tmp = urlparse.parse_qsl(url)
+    if len(tmp) > 1:
+        res = None
+        if URLS[0][0] in tmp[0][0] and URLS[0][1] == tmp[1][0]:
+            url2 = "%s%s?v=2&max-results=25&start-index=1" % (URLS[0][2], tmp[1][1])
+            while url2:
+                xml = urllib2.urlopen(urllib2.Request(url2)).readlines()
+                url2 = None
+                if "<link rel='next'" in xml[0]:
+                    url2 = xml[0].split("rel='next'")[1].split("href='")[1].split("'/>")[0]
+                    url2 = url2.replace("amp;", "")
+                for line in xml:
+                    if "src='" in line:
+                        v = line.split("src='")[1].split("'")[0]
+                        if tmp[0][1] in v:
+                            res = _request(STATUS_JSON, _encode(action, v))
+                        else:
+                            res = _request(STATUS_JSON, _encode("add_enqueue", v))
+        return res
 
 def request_playlist():
     """"""
@@ -72,11 +107,12 @@ def request_browse(uri=None):
 def request_status(action=None, option=None):
     """"""
     if action in ACTIONS:
-        command = ACTIONS[action]
-        tmp = {"command": command[0]}
-        if option and len(command) > 1:
-            tmp[command[1]] = option
-        return _request(STATUS_JSON, urllib.urlencode(tmp))
+        if option and option.startswith(("http://", "https://")):
+            config.add_url_history(option)
+            response = _process_url(action, option)
+            if response:
+                return response
+        return _request(STATUS_JSON, _encode(action, option))
     else:
         return _request(STATUS_JSON)
 
