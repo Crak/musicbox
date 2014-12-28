@@ -47,8 +47,10 @@
         </div>
         <ul class="nav nav-pills nav-justified">
             <li class="btn btn-primary btn-lg" data-toggle="collapse" href="#playlist" id="playlist-button">
-                <span class="glyphicon glyphicon-th-list pull-left"></span>
-                <span class="badge-inverse pull-right" id="playlist-items"></span>
+                <div class="clearfix">
+                    <span class="glyphicon glyphicon-th-list pull-left"></span>
+                    <span class="badge-inverse pull-right" id="playlist-items"></span>
+                </div>
             </li>
         </ul>
 	</div><!-- .panel-heading -->

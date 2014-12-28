@@ -75,6 +75,10 @@ def add_url_history(url):
             url_list.pop()
     url_list.insert(0, url)
     config.set(DEFAULT_SECTION, URL_HISTORY_OPTION, json.dumps(url_list))
+    save()
+    
+def save():
+    """"""
     fd = open(CONFIG_FILE, "w")
     config.write(fd)
     fd.close()
@@ -83,4 +87,4 @@ config = ConfigParser.SafeConfigParser(DEFAULTS)
 config.read(CONFIG_FILE)
 
 if __name__ == "__main__":
-    print get_urls()
+    print save()
