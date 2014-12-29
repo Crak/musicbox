@@ -84,10 +84,13 @@ class ProcessManager:
     
     UPTIME_CMD = ["uptime"]
     UNAME_CMD = ["uname", "-a"]
-    VLC_CMD = ["/usr/bin/vlc", "-I", "http", 
-    "--http-password", config.get_vlc_password(), "--x11-display", ":0", "--fullscreen"]
+    VLC_CMD = ["/usr/bin/vlc", "-I", "http", "--http-password", config.get_vlc_password(), 
+    "--x11-display", ":0", "--fullscreen"]
+    VNC_CMD = ["/usr/bin/x11vnc", "-forever", "-passwd", config.get_vnc_password(), 
+    "-nevershared", "-auth", "guess"]
     
     VLC_LOG = "/tmp/musicbox_vlc.log"
+    VNC_LOG = "/tmp/musicbox_vnc.log"
     
     def __init__(self):
         """"""
@@ -107,21 +110,43 @@ class ProcessManager:
         log.setFormatter(format)
         self.vlc_logger.addHandler(log)
         
+        self.vnc_logger = logging.getLogger("VNC")
+        self.vnc_logger.setLevel(logging.INFO)
+        log = logging.FileHandler(self.VNC_LOG, "w")
+        log.setFormatter(format)
+        self.vnc_logger.addHandler(log)
+        
+        self.buffers = []
         
         self.vlc = self._spawn(self.VLC_CMD)
+        if self.vlc:
+            th = Thread(target=self.vlc_log_buffer)
+            th.daemon = True
+            th.start()
+            self.buffers.append(th)
         
-        self.th = Thread(target=self._log_buffer)
-        self.th.daemon = True
-        self.th.start()
-        
+        self.vnc = self._spawn(self.VNC_CMD)
+        if self.vnc:
+            th = Thread(target=self.vnc_log_buffer)
+            th.daemon = True
+            th.start()
+            self.buffers.append(th)
+
         atexit.register(self.quit)
         
-    def _log_buffer(self):
+    def vlc_log_buffer(self):
         """"""
         while True:
             line = self.vlc.stdout.readline()
             if line:
                 self.vlc_logger.info(line.strip())
+
+    def vnc_log_buffer(self):
+        """"""
+        while True:
+            line = self.vnc.stdout.readline()
+            if line:
+                self.vnc_logger.info(line.strip())
         
     def _demote(self):
         """"""
@@ -137,7 +162,7 @@ class ProcessManager:
                 preexec_fn=self._demote,
                 env=self.env)
         except Exception as e:
-            print e
+            print " ".join(cmd), e
         else:
             return p
 
@@ -157,6 +182,7 @@ class ProcessManager:
         """"""
         try:
             self.vlc.terminate()
+            self.vlc.wait()
         except Exception as e:
             self.vlc_logger.error(e)
         else:
@@ -171,17 +197,39 @@ class ProcessManager:
         if full:
             return "".join(tmp)
         else:
-            return "".join(tmp[-25:])
+            return "".join(tmp[-20:])
+            
+    def restart_vnc(self):
+        """"""
+        try:
+            self.vnc.terminate()
+            self.vnc.wait()
+        except Exception as e:
+            self.vnc_logger.error(e)
+        else:
+            self.vnc_logger.warning("Restarted")
+            self.vnc = self._spawn(self.VNC_CMD)
         
+    def get_vnc_log(self, full=False):
+        """"""
+        f = open(self.VNC_LOG, "r")
+        tmp = f.readlines()
+        f.close()
+        if full:
+            return "".join(tmp)
+        else:
+            return "".join(tmp[-20:])
         
     def quit(self):
         """"""
-        for p in [self.vlc]:
+        for p in [self.vlc, self.vnc]:
             try:
-                p.terminate()
+                if p:
+                    p.terminate()
             except Exception as e:
                 print e
-        self.th.join(0.1)
+        for th in self.buffers:
+            th.join(0.1)
 
 if __name__ == "__main__":
     p = ProcessManager()

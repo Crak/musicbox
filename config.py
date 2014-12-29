@@ -27,6 +27,7 @@ HOST_OPTION = "bottle_host"
 ELEMENT_OPTION = "alsa_element"
 USER_OPTION = "system_user"
 VLC_PASSWORD_OPTION = "vlc_password"
+VNC_PASSWORD_OPTION = "vnc_password"
 URI_OPTION = "default_uri"
 URL_HISTORY_OPTION = "url_history"
 
@@ -35,6 +36,7 @@ DEFAULTS = {
     ELEMENT_OPTION: "PCM",
     USER_OPTION: "musicbox",
     VLC_PASSWORD_OPTION: "0000",
+    VNC_PASSWORD_OPTION: "0000",
     URI_OPTION: "file:///home/musicbox",
     URL_HISTORY_OPTION: "[]"
 }
@@ -57,6 +59,10 @@ def get_vlc_password():
     """"""
     return config.get(DEFAULT_SECTION, VLC_PASSWORD_OPTION)
     
+def get_vnc_password():
+    """"""
+    return config.get(DEFAULT_SECTION, VNC_PASSWORD_OPTION)
+
 def get_uri():
     """"""
     return config.get(DEFAULT_SECTION, URI_OPTION)

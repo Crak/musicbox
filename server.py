@@ -50,7 +50,7 @@ def template_values(page):
     if page == SYSTEM:
         values['uname'] = manager.get_uname()
         values['uptime'] = manager.get_uptime()
-        values['log'] = manager.get_vlc_log()
+        values['logs'] = manager.get_vlc_log(), manager.get_vnc_log()
     return values
     
 @route('/js/<filepath:path>')
@@ -124,16 +124,29 @@ def system_manager():
     response.headers['Content-type'] = 'application/json'
     req = request.forms.get('request')
     #print "REQUEST: %s" % req
-    if req == 'vlc':
+    if req == 'logs':
         act = request.forms.get('action')
         #print "ACTION: %s" % act
-        full_log = False
-        if act == 'log':
-            full_log = True
-        elif act == 'restart':
+        full_logs = False
+        if act == 'full':
+            full_logs = True
+        return json.dumps({
+        'vlc_log': manager.get_vlc_log(full_logs), 
+        'vnc_log': manager.get_vnc_log(full_logs)
+        })
+    elif req == 'vlc':
+        act = request.forms.get('action')
+        #print "ACTION: %s" % act
+        if act == 'restart':
             manager.restart_vlc()
-        return json.dumps({'vlc_log': manager.get_vlc_log(full_log)})
-    if req == 'system':
+        return json.dumps({'vlc_log': manager.get_vlc_log()})
+    elif req == 'vnc':
+        act = request.forms.get('action')
+        #print "ACTION: %s" % act
+        if act == 'restart':
+            manager.restart_vnc()
+        return json.dumps({'vnc_log': manager.get_vnc_log()})
+    elif req == 'system':
         act = request.forms.get('action')
         #print "ACTION: %s" % act
         if act == 'quit':
