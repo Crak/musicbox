@@ -84,6 +84,7 @@ class ProcessManager:
     
     UPTIME_CMD = ["uptime"]
     UNAME_CMD = ["uname", "-a"]
+    SUSPEND_CMD = ["pm-suspend"]
     VLC_CMD = ["/usr/bin/vlc", "-I", "http", "--http-password", config.get_vlc_password(), 
     "--x11-display", ":0", "--fullscreen"]
     VNC_CMD = ["/usr/bin/x11vnc", "-forever", "-passwd", config.get_vnc_password(), 
@@ -134,20 +135,6 @@ class ProcessManager:
 
         atexit.register(self.quit)
         
-    def vlc_log_buffer(self):
-        """"""
-        while True:
-            line = self.vlc.stdout.readline()
-            if line:
-                self.vlc_logger.info(line.strip())
-
-    def vnc_log_buffer(self):
-        """"""
-        while True:
-            line = self.vnc.stdout.readline()
-            if line:
-                self.vnc_logger.info(line.strip())
-        
     def _demote(self):
         """"""
         os.initgroups(self.USER, self.gid)
@@ -165,6 +152,15 @@ class ProcessManager:
             print " ".join(cmd), e
         else:
             return p
+
+    def suspend(self):
+        """"""
+        try:
+            p = subprocess.Popen(self.SUSPEND_CMD)
+        except Exception as e:
+            print e
+        else:
+            return True
 
     def get_uname(self):
         """"""
@@ -199,6 +195,13 @@ class ProcessManager:
         else:
             return "".join(tmp[-20:])
             
+    def vlc_log_buffer(self):
+        """"""
+        while True:
+            line = self.vlc.stdout.readline()
+            if line:
+                self.vlc_logger.info(line.strip())
+            
     def restart_vnc(self):
         """"""
         try:
@@ -219,6 +222,13 @@ class ProcessManager:
             return "".join(tmp)
         else:
             return "".join(tmp[-20:])
+
+    def vnc_log_buffer(self):
+        """"""
+        while True:
+            line = self.vnc.stdout.readline()
+            if line:
+                self.vnc_logger.info(line.strip())
         
     def quit(self):
         """"""

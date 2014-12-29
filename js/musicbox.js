@@ -18,7 +18,8 @@ function show_alert(origin, message){
 }
 
 function load_standby(event){
-    show_alert("MUSICBOX");
+    show_alert("MUSICBOX", "The system is going to sleep!");
+    $.ajax({url: "/", method: "POST", data: {request: "standby"}});
 }
 
 function update_volume(data){

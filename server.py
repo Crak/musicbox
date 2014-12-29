@@ -96,6 +96,7 @@ def sound_manager():
             sound.volume_up()
         return json.dumps({'mute': sound.get_mute(), 'volume': sound.get_volume()})
     elif req == 'standby':
+        manager.suspend()
         return json.dumps({})
 
 @route(PLAYER['url'], method='POST')
@@ -155,4 +156,4 @@ def system_manager():
 if __name__ == '__main__':
     sound = SoundControl()
     manager = ProcessManager()
-    run(host=config.get_host(), port=80)
+    run(host=config.get_host(), port=8081)

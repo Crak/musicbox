@@ -51,7 +51,7 @@
                             <span class="glyphicon glyphicon-plus"></span>
                         </button>
                     </div>
-                    <button type="button" class="btn btn-default navbar-btn" data-toggle="button" id="standby-button">
+                    <button type="button" class="btn btn-default navbar-btn" id="standby-button">
                         <span class="glyphicon glyphicon-flash"></span>
                     </button>
                 </div>
