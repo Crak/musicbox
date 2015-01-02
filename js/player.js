@@ -6,8 +6,10 @@ var player_time = 0;
 var player_length = 0;
 
 function watchdog(){
-    if (playing()){update_player();};
-    vlc_request();
+    if (!document.hidden) {
+        if (playing()){update_player();};
+        vlc_request();
+    }
 }
 
 function playing(){
