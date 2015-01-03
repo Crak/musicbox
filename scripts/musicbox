@@ -1,0 +1,4 @@
+#!/bin/sh
+
+cd /usr/local/src/musicbox        # sets the src directory
+exec ./server.py                        # starts the server
