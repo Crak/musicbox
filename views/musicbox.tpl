@@ -32,7 +32,7 @@
               </ul>
                 <div class="navbar-right">
                     <button type="button" class="btn btn-default navbar-btn" id="volume-mute-button">
-                    %if defined('mute'):
+                    %if mute:
                         <span class="glyphicon glyphicon-volume-off"></span>
                     %else:
                         <span class="glyphicon glyphicon-volume-up"></span>

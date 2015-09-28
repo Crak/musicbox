@@ -85,8 +85,13 @@ class ProcessManager:
     UPTIME_CMD = ["uptime"]
     UNAME_CMD = ["uname", "-a"]
     SUSPEND_CMD = ["pm-suspend"]
-    VLC_CMD = ["/usr/bin/vlc", "-I", "http", "--http-password", config.get_vlc_password(), 
-    "--x11-display", ":0", "--fullscreen"]
+    
+    VLC_X_CMD = ["/usr/bin/vlc", "-I", "http", "--http-password", 
+    config.get_vlc_password(), "--x11-display", ":0", "--fullscreen"]
+
+    VLC_NOX_CMD = ["/usr/bin/vlc", "-I", "http", "--http-password", 
+    config.get_vlc_password()]
+
     
     VLC_LOG = "/tmp/musicbox_vlc.log"
     
@@ -110,7 +115,14 @@ class ProcessManager:
                 
         self.buffers = []
         
-        self.vlc = self._spawn(self.VLC_CMD)
+        if os.path.isfile("/tmp/.X0-lock"):
+            print "Starting VLC with X support"
+            self.vlc_cmd = self.VLC_X_CMD
+        else:
+            print "Starting VLC without X support"
+            self.vlc_cmd = self.VLC_NOX_CMD
+
+        self.vlc = self._spawn(self.vlc_cmd)
         if self.vlc:
             th = Thread(target=self.vlc_log_buffer)
             th.daemon = True
@@ -167,7 +179,7 @@ class ProcessManager:
             self.vlc_logger.error(e)
         else:
             self.vlc_logger.warning("Restarted")
-            self.vlc = self._spawn(self.VLC_CMD)
+        self.vlc = self._spawn(self.vlc_cmd)
         
     def get_vlc_log(self, full=False):
         """"""
