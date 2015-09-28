@@ -116,10 +116,10 @@ class ProcessManager:
         self.buffers = []
         
         if os.path.isfile("/tmp/.X0-lock"):
-            print "Starting VLC with X support"
+            self.vlc_logger.info("Starting VLC with X support")
             self.vlc_cmd = self.VLC_X_CMD
         else:
-            print "Starting VLC without X support"
+            self.vlc_logger.info("Starting VLC without X support")
             self.vlc_cmd = self.VLC_NOX_CMD
 
         self.vlc = self._spawn(self.vlc_cmd)
