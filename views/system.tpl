@@ -9,9 +9,6 @@
     <li><a id="restart-vlc-button">Restart VLC
         <span class="glyphicon glyphicon-refresh pull-right"></span>
     </a></li>
-    <li><a id="restart-vnc-button">Restart VNC
-        <span class="glyphicon glyphicon-refresh pull-right"></span>
-    </a></li>
     <li class="divider"></li>
     <li><a id="quit-button">Quit Server
     <span class="glyphicon glyphicon-off pull-right"></span>
@@ -28,18 +25,12 @@
         <li role="presentation" class="active">
             <a href="#vlc" role="tab" data-toggle="tab">VLC</a>
         </li>
-        <li role="presentation">
-            <a href="#vnc" role="tab" data-toggle="tab">VNC</a>
-        </li>
     </ul>
 </div>
 <!-- Tab panes -->
 <div class="tab-content">
     <div role="tabpanel" class="tab-pane active" id="vlc">
         <pre id="vlc-log">{{logs[0]}}</pre>
-    </div>
-    <div role="tabpanel" class="tab-pane" id="vnc">
-        <pre id="vnc-log">{{logs[1]}}</pre>
     </div>
 </div>
 

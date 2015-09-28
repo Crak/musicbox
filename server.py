@@ -51,7 +51,7 @@ def template_values(page):
     if page == SYSTEM:
         values['uname'] = manager.get_uname()
         values['uptime'] = manager.get_uptime()
-        values['logs'] = manager.get_vlc_log(), manager.get_vnc_log()
+        values['logs'] = [manager.get_vlc_log()]
     return values
  
 @bottle.get('/js/<filepath:path>')    
@@ -125,20 +125,12 @@ def system_manager():
         full_logs = False
         if act == 'full':
             full_logs = True
-        return json.dumps({
-        'vlc_log': manager.get_vlc_log(full_logs), 
-        'vnc_log': manager.get_vnc_log(full_logs)
-        })
+        return json.dumps({'vlc_log': manager.get_vlc_log(full_logs)})
     elif req == 'vlc':
         act = bottle.request.forms.action
         if act == 'restart':
             manager.restart_vlc()
         return json.dumps({'vlc_log': manager.get_vlc_log()})
-    elif req == 'vnc':
-        act = bottle.request.forms.action
-        if act == 'restart':
-            manager.restart_vnc()
-        return json.dumps({'vnc_log': manager.get_vnc_log()})
     elif req == 'system':
         act = bottle.request.forms.action
         if act == 'quit':
