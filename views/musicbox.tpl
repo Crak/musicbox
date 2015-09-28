@@ -32,11 +32,11 @@
               </ul>
                 <div class="navbar-right">
                     <button type="button" class="btn btn-default navbar-btn" id="volume-mute-button">
-                    %if mute:
+                    %if defined('mute'):
                         <span class="glyphicon glyphicon-volume-off"></span>
                     %else:
                         <span class="glyphicon glyphicon-volume-up"></span>
-                    %end:
+                    %end
                     </button>
                     <div class="btn-group" id="volume-control">
                         <button type="button" class="btn btn-default navbar-btn"  id="volume-down-button">
@@ -63,7 +63,7 @@
         </div>
 
         <div class="container" id="content">
-        %include
+        {{!base}}
         </div>
         
         <!-- jQuery -->

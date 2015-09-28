@@ -43,4 +43,4 @@
     </div>
 </div>
 
-%rebase musicbox **locals()
+% rebase('musicbox.tpl')

@@ -104,4 +104,4 @@
     </div>
 </div><!-- /.modal -->
 
-%rebase musicbox **locals()
+% rebase('musicbox.tpl')

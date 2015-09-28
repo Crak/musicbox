@@ -24,7 +24,8 @@ import json
 
 import config
 
-from bottle import route, view, request, response, static_file, run
+import bottle
+
 from vlc_proxy import request_browse, request_status, request_playlist
 from musicbox import SoundControl, ProcessManager
 
@@ -52,42 +53,40 @@ def template_values(page):
         values['uptime'] = manager.get_uptime()
         values['logs'] = manager.get_vlc_log(), manager.get_vnc_log()
     return values
-    
-@route('/js/<filepath:path>')
+ 
+@bottle.get('/js/<filepath:path>')    
 def serve_javascript(filepath):
-    return static_file(filepath, root='./js/')
+    return bottle.static_file(filepath, root='./js/')
 
-@route('/css/<filepath:path>')
+@bottle.get('/css/<filepath:path>')
 def serve_css(filepath):
-    return static_file(filepath, root='./css/')
+    return bottle.static_file(filepath, root='./css/')
 
-@route('/bootstrap/<filepath:path>')
+@bottle.get('/bootstrap/<filepath:path>')
 def serve_bootstrap(filepath):
-    return static_file(filepath, root='./bootstrap/')
+    return bottle.static_file(filepath, root='./bootstrap/')
 
-@route('/media/<filepath:path>')
+@bottle.get('/media/<filepath:path>')
 def serve_media(filepath):
-    return static_file(filepath, root='./media/')
+    return bottle.static_file(filepath, root='./media/')
 
-@route(DEFAULT['url'])
-@route(PLAYER['url'])
-@view(PLAYER['tpl'])
+@bottle.get(DEFAULT['url'])
+@bottle.get(PLAYER['url'])
+@bottle.view(PLAYER['tpl'])
 def local_player():
     return template_values(PLAYER)
     
-@route(SYSTEM['url'])
-@view(SYSTEM['tpl'])
+@bottle.get(SYSTEM['url'])
+@bottle.view(SYSTEM['tpl'])
 def system_logs():
     return template_values(SYSTEM)
 
-@route(DEFAULT['url'], method='POST')
+@bottle.post(DEFAULT['url'])
 def sound_manager():
-    response.headers['Content-type'] = 'application/json'
-    req = request.forms.get('request')
-    #print "REQUEST: %s" % req
+    bottle.response.headers['Content-type'] = 'application/json'
+    req = bottle.request.forms.request
     if req == 'sound':
-        act = request.forms.get('action')
-        #print "ACTION: %s" % act
+        act = bottle.request.forms.action
         if act == 'mute':
             sound.toggle_mute()
         elif act == 'volume_down':
@@ -99,35 +98,30 @@ def sound_manager():
         manager.suspend()
         return json.dumps({})
 
-@route(PLAYER['url'], method='POST')
+@bottle.post(PLAYER['url'])
 def local_proxy():
-    response.headers['Content-type'] = 'application/json'
-    req = request.forms.get('request')
-    #print "REQUEST: %s" % req
+    bottle.response.headers['Content-type'] = 'application/json'
+    req = bottle.request.forms.request
     if req == 'playlist':
         return request_playlist()
     elif req == 'browse':
-        uri = request.forms.get('uri')
-        #print "URI: %s" % uri
+        uri = bottle.request.forms.uri
         data = json.loads(request_browse(uri))
-        act = request.forms.get('action')
+        act = bottle.request.forms.action
         if act == 'load':
             data['urls'] = config.get_url_history()
         return json.dumps(data)
     elif req == 'status':
-        act = request.forms.get('action')
-        opt = request.forms.get('option')
-        #print "ACTION: %s - %s" % (act, opt)
+        act = bottle.request.forms.action
+        opt = bottle.request.forms.option
         return request_status(act, opt)
 
-@route(SYSTEM['url'], method='POST')
+@bottle.post(SYSTEM['url'])
 def system_manager():
-    response.headers['Content-type'] = 'application/json'
-    req = request.forms.get('request')
-    #print "REQUEST: %s" % req
+    bottle.response.headers['Content-type'] = 'application/json'
+    req = bottle.request.forms.request
     if req == 'logs':
-        act = request.forms.get('action')
-        #print "ACTION: %s" % act
+        act = bottle.request.forms.action
         full_logs = False
         if act == 'full':
             full_logs = True
@@ -136,24 +130,21 @@ def system_manager():
         'vnc_log': manager.get_vnc_log(full_logs)
         })
     elif req == 'vlc':
-        act = request.forms.get('action')
-        #print "ACTION: %s" % act
+        act = bottle.request.forms.action
         if act == 'restart':
             manager.restart_vlc()
         return json.dumps({'vlc_log': manager.get_vlc_log()})
     elif req == 'vnc':
-        act = request.forms.get('action')
-        #print "ACTION: %s" % act
+        act = bottle.request.forms.action
         if act == 'restart':
             manager.restart_vnc()
         return json.dumps({'vnc_log': manager.get_vnc_log()})
     elif req == 'system':
-        act = request.forms.get('action')
-        #print "ACTION: %s" % act
+        act = bottle.request.forms.action
         if act == 'quit':
             sys.stderr.close()
 
 if __name__ == '__main__':
     sound = SoundControl()
     manager = ProcessManager()
-    run(host=config.get_host(), port=8081)
+    bottle.run(host=config.get_host(), port=8081)
