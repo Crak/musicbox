@@ -90,7 +90,7 @@ class ProcessManager:
     config.get_vlc_password(), "--x11-display", ":0", "--fullscreen"]
 
     VLC_NOX_CMD = ["/usr/bin/vlc", "-I", "http", "--http-password", 
-    config.get_vlc_password()]
+    config.get_vlc_password(), "--vout", "none"]
 
     
     VLC_LOG = "/tmp/musicbox_vlc.log"
